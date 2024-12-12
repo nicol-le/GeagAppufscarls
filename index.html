@@ -218,26 +218,30 @@
                 atualizarTabela();
             });
 
-            function atualizarTabela() {
-                tabelaDados.innerHTML = '';
-                dadosPragas.forEach((registro) => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${registro.Talhão}</td>
-                        <td>${registro.Planta}</td>
-                        <td>${registro.Pragueiro}</td>
-                        <td>${registro.Praga}</td>
-                        <td>${registro.Quantidade}</td>
-                        <td>${registro.Observações}</td>
-                        <td><button onclick="excluirRegistro(${index})">Excluir</button></td>
-                    `;
-                    tabelaDados.appendChild(row);
-                });
-            }
+           
+function atualizarTabela() {
+    tabelaDados.innerHTML = '';
+    dadosPragas.forEach((registro, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${registro.Talhão}</td>
+            <td>${registro.Planta}</td>
+            <td>${registro.Pragueiro}</td>
+            <td>${registro.Praga}</td>
+            <td>${registro.Quantidade}</td>
+            <td>${registro.Observações}</td>
+            <td><button onclick="excluirRegistro(${index})">Excluir</button></td>
+        `;
+        tabelaDados.appendChild(row);
+    });
+}
+
 function excluirRegistro(index) {
     dadosPragas.splice(index, 1);
     atualizarTabela();
+    salvarDados();
 }
+
             function salvarDados() {
         localStorage.setItem('dadosPragas', JSON.stringify(dadosPragas));
     }
