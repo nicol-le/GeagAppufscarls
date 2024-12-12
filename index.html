@@ -229,11 +229,15 @@
                         <td>${registro.Praga}</td>
                         <td>${registro.Quantidade}</td>
                         <td>${registro.Observações}</td>
+                        <td><button onclick="excluirRegistro(${index})">Excluir</button></td>
                     `;
                     tabelaDados.appendChild(row);
                 });
             }
-
+function excluirRegistro(index) {
+    dadosPragas.splice(index, 1);
+    atualizarTabela();
+}
             function salvarDados() {
         localStorage.setItem('dadosPragas', JSON.stringify(dadosPragas));
     }
