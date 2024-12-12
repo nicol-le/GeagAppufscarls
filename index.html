@@ -242,35 +242,26 @@ function excluirRegistro(index) {
     salvarDados();
 }
 
-            function salvarDados() {
-        localStorage.setItem('dadosPragas', JSON.stringify(dadosPragas));
-    }
+         function salvarDados() {
+    localStorage.setItem('dadosPragas', JSON.stringify(dadosPragas));
+}
 
-    // Incrementa o número da planta
-
-    // Adiciona praga
-    adicionarPragaBtn.addEventListener('click', () => {
-        const talhao = document.getElementById('talhao').value;
-        const pragueiro = document.getElementById('nomePragueiro').value;
-        const nomePraga = document.getElementById('nomePraga').value;
-        const quantidade = document.getElementById('quantidade').value;
-        const observacoes = document.getElementById('observacoes').value;
-
-        const registro = {
-            Talhão: talhao,
-            Planta: numeroPlanta,
-            Pragueiro: pragueiro,
-            Praga: nomePraga,
-            Quantidade: quantidade,
-            Observações: observacoes
-        };
-
-        dadosPragas.push(registro);
-        salvarDados();
+function carregarDados() {
+    const dadosSalvos = localStorage.getItem('dadosPragas');
+    if (dadosSalvos) {
+        dadosPragas = JSON.parse(dadosSalvos);
         atualizarTabela();
-    });
+    }
+}
 
-    // Baixa os dados em formato Excel
+// Carrega os dados salvos ao carregar a página
+document.addEventListener('DOMContentLoaded', () => {
+    carregarDados();
+    atualizarTabela();
+});
+
+
+  
     baixarExcelBtn.addEventListener('click', () => {
         const workbook = XLSX.utils.book_new();
         const worksheet = XLSX.utils.json_to_sheet(dadosPragas);
