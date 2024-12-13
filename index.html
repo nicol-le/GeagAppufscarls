@@ -182,111 +182,108 @@
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const numeroPlantaInput = document.getElementById('numeroPlanta');
-            const adicionarPlantaBtn = document.getElementById('adicionarPlanta');
-            const adicionarPragaBtn = document.getElementById('adicionarPraga');
-            const tabelaDados = document.getElementById('tabelaDados');
-            const baixarExcelBtn = document.getElementById('baixarExcel');
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const numeroPlantaInput = document.getElementById('numeroPlanta');
+        const adicionarPlantaBtn = document.getElementById('adicionarPlanta');
+        const adicionarPragaBtn = document.getElementById('adicionarPraga');
+        const tabelaDados = document.getElementById('tabelaDados');
+        const baixarExcelBtn = document.getElementById('baixarExcel');
+        const apagarTodosBtn = document.createElement('button');
 
-            let numeroPlanta = 1;
-            const dadosPragas = [];
+        apagarTodosBtn.textContent = "Apagar Todos os Dados";
+        apagarTodosBtn.style.marginTop = "10px";
+        document.querySelector('.app-container').appendChild(apagarTodosBtn);
 
-            adicionarPlantaBtn.addEventListener('click', () => {
-    numeroPlanta++;
-    numeroPlantaInput.value = numeroPlanta;
+        let numeroPlanta = 1;
+        let dadosPragas = [];
 
-
-});
-
-            adicionarPragaBtn.addEventListener('click', () => {
-                const talhao = document.getElementById('talhao').value;
-                const pragueiro = document.getElementById('nomePragueiro').value;
-                const nomePraga = document.getElementById('nomePraga').value;
-                const quantidade = document.getElementById('quantidade').value;
-                const observacoes = document.getElementById('observacoes').value;
-
-                const registro = {
-                    Talhão: talhao,
-                    Planta: numeroPlanta,
-                    Pragueiro: pragueiro,
-                    Praga: nomePraga,
-                    Quantidade: quantidade,
-                    Observações: observacoes
-                };
-
-                dadosPragas.push(registro);
-                atualizarTabela();
-            });
-
-           
-function atualizarTabela() {
-    tabelaDados.innerHTML = '';
-    dadosPragas.forEach((registro, index) => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${registro.Talhão}</td>
-            <td>${registro.Planta}</td>
-            <td>${registro.Pragueiro}</td>
-            <td>${registro.Praga}</td>
-            <td>${registro.Quantidade}</td>
-            <td>${registro.Observações}</td>
-            <td><button onclick="excluirRegistro(${index})">Excluir</button></td>
-        `;
-        tabelaDados.appendChild(row);
-    });
-}
-
-function excluirRegistro(index) {
-    dadosPragas.splice(index, 1);
-    atualizarTabela();
-    salvarDados();
-}
-
-         function salvarDados() {
-    localStorage.setItem('dadosPragas', JSON.stringify(dadosPragas));
-}
-
-function carregarDados() {
-    const dadosSalvos = localStorage.getItem('dadosPragas');
-    if (dadosSalvos) {
-        dadosPragas = JSON.parse(dadosSalvos);
-        atualizarTabela();
-    }
-}
-
-// Carrega os dados salvos ao carregar a página
-document.addEventListener('DOMContentLoaded', () => {
-    carregarDados();
-    atualizarTabela();
-});
-
-
-  
-    baixarExcelBtn.addEventListener('click', () => {
-        const workbook = XLSX.utils.book_new();
-        const worksheet = XLSX.utils.json_to_sheet(dadosPragas);
-        XLSX.utils.book_append_sheet(workbook, worksheet, "Dados Pragas");
-        XLSX.writeFile(workbook, "dados_pragas.xlsx");
-    });
-
-    // Inicializa a tabela com os dados armazenados
-    atualizarTabela();
-    if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/service-worker.js')
-        .then((registration) => {
-            console.log('Service Worker registrado com sucesso:', registration);
-        })
-        .catch((error) => {
-            console.log('Falha ao registrar o Service Worker:', error);
+        adicionarPlantaBtn.addEventListener('click', () => {
+            numeroPlanta++;
+            numeroPlantaInput.value = numeroPlanta;
         });
-}
 
-});
-        
-    </script>
-    <button onclick="window.open('https://nicol-le.github.io/GeagAppufscarls/', '_blank')">Abrir no Navegador</button>
+        adicionarPragaBtn.addEventListener('click', () => {
+            const talhao = document.getElementById('talhao').value;
+            const pragueiro = document.getElementById('nomePragueiro').value;
+            const nomePraga = document.getElementById('nomePraga').value;
+            const quantidade = document.getElementById('quantidade').value;
+            const observacoes = document.getElementById('observacoes').value;
+
+            const registro = {
+                Talhão: talhao,
+                Planta: numeroPlanta,
+                Pragueiro: pragueiro,
+                Praga: nomePraga,
+                Quantidade: quantidade,
+                Observações: observacoes
+            };
+
+            dadosPragas.push(registro);
+            salvarDados();
+            atualizarTabela();
+        });
+
+        function atualizarTabela() {
+            tabelaDados.innerHTML = '';
+            dadosPragas.forEach((registro, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${registro.Talhão}</td>
+                    <td>${registro.Planta}</td>
+                    <td>${registro.Pragueiro}</td>
+                    <td>${registro.Praga}</td>
+                    <td>${registro.Quantidade}</td>
+                    <td>${registro.Observações}</td>
+                    <td><button onclick="excluirRegistro(${index})">Excluir</button></td>
+                `;
+                tabelaDados.appendChild(row);
+            });
+        }
+
+        function excluirRegistro(index) {
+            dadosPragas.splice(index, 1);
+            salvarDados();
+            atualizarTabela();
+        }
+
+        function salvarDados() {
+            localStorage.setItem('dadosPragas', JSON.stringify(dadosPragas));
+        }
+
+        function carregarDados() {
+            const dadosSalvos = localStorage.getItem('dadosPragas');
+            if (dadosSalvos) {
+                dadosPragas = JSON.parse(dadosSalvos);
+                atualizarTabela();
+            }
+        }
+
+        baixarExcelBtn.addEventListener('click', () => {
+            if (dadosPragas.length === 0) {
+                alert("Nenhum dado para baixar.");
+                return;
+            }
+            const workbook = XLSX.utils.book_new();
+            const worksheet = XLSX.utils.json_to_sheet(dadosPragas);
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Dados Pragas");
+            XLSX.writeFile(workbook, "dados_pragas.xlsx");
+        });
+
+        apagarTodosBtn.addEventListener('click', () => {
+            if (confirm("Deseja realmente apagar todos os dados?")) {
+                dadosPragas = [];
+                salvarDados();
+                atualizarTabela();
+            }
+        });
+
+        // Carrega os dados salvos ao carregar a página
+        carregarDados();
+    });
+</script>
+
 
 </body>
 </html>
