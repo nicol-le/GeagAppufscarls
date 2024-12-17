@@ -5,10 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Pragas</title>
     <link rel="manifest" href="manifest.json">
-<script>
-
-</script>
-
     <style>
         * {
             margin: 0;
@@ -81,6 +77,11 @@
             background: #0055cc;
         }
 
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+        }
+
         .visualizacao-dados {
             margin-top: 20px;
             width: 100%;
@@ -131,8 +132,11 @@
                 </div>
                 <div class="form-group">
                     <label for="numeroPlanta">Número da Planta:</label>
-                    <input type="number" id="numeroPlanta" value="1" >
-                    <button type="button" id="adicionarPlanta">Adicionar Planta</button>
+                    <div class="button-group">
+                        <button type="button" id="plantaAnterior">Anterior</button>
+                        <input type="number" id="numeroPlanta" value="1" readonly>
+                        <button type="button" id="plantaSeguinte">Seguinte</button>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="nomePraga">Praga:</label>
@@ -145,7 +149,7 @@
                         <option value="NFMB">NFMB</option>
                         <option value="MA">MA</option>
                         <option value="LG">LG</option>
-                        <option value="MBA">MBA</option>
+                        <option value="MBA">AMB</option>
                         <option value="Desfolha F(%)">Desfolha F(%)</option>
                         <option value="Desfolha G(%)">Desfolha G(%)</option>
                         <option value="Desfolha L(%)">Desfolha L(%)</option>
@@ -176,6 +180,7 @@
                         <th>Praga</th>
                         <th>Quantidade</th>
                         <th>Observações</th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody id="tabelaDados"></tbody>
@@ -187,38 +192,52 @@
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const numeroPlantaInput = document.getElementById('numeroPlanta');
-        const adicionarPlantaBtn = document.getElementById('adicionarPlanta');
+        const plantaAnteriorBtn = document.getElementById('plantaAnterior');
+        const plantaSeguinteBtn = document.getElementById('plantaSeguinte');
         const adicionarPragaBtn = document.getElementById('adicionarPraga');
         const tabelaDados = document.getElementById('tabelaDados');
+        const talhaoSelect = document.getElementById('talhao');
         const baixarExcelBtn = document.getElementById('baixarExcel');
-        const apagarTodosBtn = document.createElement('button');
-
-        apagarTodosBtn.textContent = "Apagar Todos os Dados";
-        apagarTodosBtn.style.marginTop = "10px";
-        document.querySelector('.app-container').appendChild(apagarTodosBtn);
 
         let numeroPlanta = 1;
         let dadosPragas = [];
 
-        adicionarPlantaBtn.addEventListener('click', () => {
+        plantaAnteriorBtn.addEventListener('click', () => {
+            if (numeroPlanta > 1) {
+                numeroPlanta--;
+                numeroPlantaInput.value = numeroPlanta;
+            }
+        });
+
+        plantaSeguinteBtn.addEventListener('click', () => {
             numeroPlanta++;
             numeroPlantaInput.value = numeroPlanta;
         });
 
+        talhaoSelect.addEventListener('change', () => {
+            numeroPlanta = 1;
+            numeroPlantaInput.value = numeroPlanta;
+        });
+
         adicionarPragaBtn.addEventListener('click', () => {
-            const talhao = document.getElementById('talhao').value;
+            const talhao = talhaoSelect.value;
             const pragueiro = document.getElementById('nomePragueiro').value;
             const nomePraga = document.getElementById('nomePraga').value;
             const quantidade = document.getElementById('quantidade').value;
             const observacoes = document.getElementById('observacoes').value;
 
+            if (!pragueiro || !quantidade || isNaN(quantidade) || quantidade <= 0) {
+                alert('Por favor, preencha todos os campos corretamente.');
+                return;
+            }
+
             const registro = {
-                Talhão: talhao,
+                Talhao: talhao,
                 Planta: numeroPlanta,
                 Pragueiro: pragueiro,
                 Praga: nomePraga,
                 Quantidade: quantidade,
-                Observações: observacoes
+                Observacoes: observacoes
             };
 
             dadosPragas.push(registro);
@@ -230,23 +249,26 @@
             tabelaDados.innerHTML = '';
             dadosPragas.forEach((registro, index) => {
                 const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${registro.Talhão}</td>
-                    <td>${registro.Planta}</td>
-                    <td>${registro.Pragueiro}</td>
-                    <td>${registro.Praga}</td>
-                    <td>${registro.Quantidade}</td>
-                    <td>${registro.Observações}</td>
-                    <td><button onclick="excluirRegistro(${index})">Excluir</button></td>
-                `;
+
+                Object.values(registro).forEach(value => {
+                    const cell = document.createElement('td');
+                    cell.textContent = value;
+                    row.appendChild(cell);
+                });
+
+                const actionsCell = document.createElement('td');
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = 'Excluir';
+                deleteBtn.addEventListener('click', () => {
+                    dadosPragas.splice(index, 1);
+                    salvarDados();
+                    atualizarTabela();
+                });
+                actionsCell.appendChild(deleteBtn);
+                row.appendChild(actionsCell);
+
                 tabelaDados.appendChild(row);
             });
-        }
-
-        function excluirRegistro(index) {
-            dadosPragas.splice(index, 1);
-            salvarDados();
-            atualizarTabela();
         }
 
         function salvarDados() {
@@ -263,28 +285,19 @@
 
         baixarExcelBtn.addEventListener('click', () => {
             if (dadosPragas.length === 0) {
-                alert("Nenhum dado para baixar.");
+                alert('Não há dados para exportar.');
                 return;
             }
-            const workbook = XLSX.utils.book_new();
+
             const worksheet = XLSX.utils.json_to_sheet(dadosPragas);
-            XLSX.utils.book_append_sheet(workbook, worksheet, "Dados Pragas");
-            XLSX.writeFile(workbook, "dados_pragas.xlsx");
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'Pragas');
+
+            XLSX.writeFile(workbook, 'dados_pragas.xlsx');
         });
 
-        apagarTodosBtn.addEventListener('click', () => {
-            if (confirm("Deseja realmente apagar todos os dados?")) {
-                dadosPragas = [];
-                salvarDados();
-                atualizarTabela();
-            }
-        });
-
-        // Carrega os dados salvos ao carregar a página
         carregarDados();
     });
 </script>
-
-
 </body>
 </html>
