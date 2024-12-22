@@ -131,6 +131,18 @@
                     </select>
                 </div>
                 <div class="form-group">
+                    <label for="estagio">Estágio da cultura</label>
+                    <input type="text" id="estagio" placeholder="Digite o estágio">
+                </div>
+                <div class="form-group">
+                    <label for="tecnica">Técnica utilizada:</label>
+                    <select id="tecnica">
+                        <option value="bandeja">Bandeja</option>
+                        <option value="panobatido">Pano de Batida</option>
+                        <option value="contagem">Contagem direta</option>
+                    </select>
+                </div>
+                <div class="form-group">
                     <label for="numeroPlanta">Número da Planta:</label>
                     <div class="button-group">
                         <button type="button" id="plantaAnterior">Anterior</button>
@@ -141,22 +153,59 @@
                 <div class="form-group">
                     <label for="nomePraga">Praga:</label>
                     <select id="nomePraga">
-                        <option value="CIG">CIG</option>
-                        <option value="TRIP">TRIP</option>
-                        <option value="PEF">PEF</option>
-                        <option value="PG">PG</option>
-                        <option value="PGA">PGA</option>
-                        <option value="NFMB">NFMB</option>
-                        <option value="MA">MA</option>
-                        <option value="LG">LG</option>
-                        <option value="MBA">AMB</option>
-                        <option value="Desfolha F(%)">Desfolha F(%)</option>
-                        <option value="Desfolha G(%)">Desfolha G(%)</option>
-                        <option value="Desfolha L(%)">Desfolha L(%)</option>
-                        <option value="Desfolha V(%)">Desfolha V(%)</option>
-                        <option value="Outro">Outro</option>
+                        <!-- Grupo: Cigarrinhas -->
+                        <optgroup label="Cigarrinhas">
+                            <option value="CIG">CIG-Cigarrinha</option>
+                            <option value="NFCIG">NFCIG-Ninfa cigarrinha</option>
+                        </optgroup>
+                
+                        <!-- Grupo: Sugadores -->
+                        <optgroup label="Sugadores">
+                            <option value="TRIP">TRIP-Tripes</option>
+                            <option value="PER">PER-Percevejo</option>
+                            <option value="PEF">PEF-Percevejo-Fitófago</option>
+                            <option value="PG">PG-Pulgão</option>
+                            <option value="PGA">PGA-Pulgão alado</option>
+                            <option value="MA">MA-Mosca-branca</option>
+                            <option value="NFMB">NFMB-Ninfa mosca-branca</option>
+                            <option value="MBA">AMB-Adulto mosca-branca</option>
+                            <option value="MDF">MDF-Mosca-das-frutas</option>
+                        </optgroup>
+                
+                        <!-- Grupo: Predadores e Parasitóides -->
+                        <optgroup label="Predadores e Parasitóides">
+                            <option value="BL">Bicho-lixeiro</option>
+                            <option value="OBL">Ovo bicho-lixeiro</option> 
+                            <option value="JOA">JOA-Joaninha</option>
+                            <option value="JOC">JOC-Joaninha cycloneda</option>
+                            <option value="VPA">VPA-Vespa-predadora</option>
+                            <option value="OVC">OVC-Ovos de crisopídeo</option>
+                        </optgroup>
+                        <optgroup label="Desfolhadores">
+                            <option value="PUl">PUL-Pupa de lagarta</option>
+                            <option value="LGG">LGG-Lagarta grande</option>
+                            <option value="LGM">LGM-Lagarta média</option>
+                            <option value="LGS">LGS-Lagarta spodoptera</option>
+                            <option value="LGH">LGH-Lagarta helicoverpa</option>
+                            <option value="MOL">MOL-Massa ovos lagarta</option>
+                            <option value="MLP">MLP-Massa ovos lepidóptera</option>
+                            <option value="NFLG">NFLG-Ninfa lagarta</option>  
+                            <option value="OCL">OCL-Ovos de coloptera</option>
+                            <option value="GAF">GAF-Gafanhoto</option>
+                        </optgroup>
+                        
+                        <optgroup label="Desfolhadores">
+                            <option value="Desfolha F(%)">Desfolha F(%)-Formiga</option>
+                            <option value="Desfolha G(%)">Desfolha G(%)-Gafanhoto</option>
+                            <option value="Desfolha L(%)">Desfolha L(%)-Lagarta</option>
+                            <option value="Desfolha V(%)">Desfolha V(%)-Vaquinha</option>
+                        </optgroup>
+                
+                            <option value="Outro">Outro</option>
+                        
                     </select>
                 </div>
+                
                 <div class="form-group">
                     <label for="quantidade">Quantidade:</label>
                     <input type="number" id="quantidade" placeholder="Digite a quantidade">
@@ -177,6 +226,8 @@
                         <th>Talhão</th>
                         <th>Planta</th>
                         <th>Pragueiro</th>
+                        <th>Estágio</th>
+                        <th>Técnica</th>
                         <th>Praga</th>
                         <th>Quantidade</th>
                         <th>Observações</th>
@@ -189,115 +240,113 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const numeroPlantaInput = document.getElementById('numeroPlanta');
-        const plantaAnteriorBtn = document.getElementById('plantaAnterior');
-        const plantaSeguinteBtn = document.getElementById('plantaSeguinte');
-        const adicionarPragaBtn = document.getElementById('adicionarPraga');
-        const tabelaDados = document.getElementById('tabelaDados');
-        const talhaoSelect = document.getElementById('talhao');
-        const baixarExcelBtn = document.getElementById('baixarExcel');
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const numeroPlantaInput = document.getElementById('numeroPlanta');
+            const plantaAnteriorBtn = document.getElementById('plantaAnterior');
+            const plantaSeguinteBtn = document.getElementById('plantaSeguinte');
+            const adicionarPragaBtn = document.getElementById('adicionarPraga');
+            const tabelaDados = document.getElementById('tabelaDados');
+            const baixarExcelBtn = document.getElementById('baixarExcel');
 
-        let numeroPlanta = 1;
-        let dadosPragas = [];
+            let numeroPlanta = 1;
+            let dadosPragas = [];
 
-        plantaAnteriorBtn.addEventListener('click', () => {
-            if (numeroPlanta > 1) {
-                numeroPlanta--;
-                numeroPlantaInput.value = numeroPlanta;
-            }
-        });
-
-        plantaSeguinteBtn.addEventListener('click', () => {
-            numeroPlanta++;
-            numeroPlantaInput.value = numeroPlanta;
-        });
-
-        talhaoSelect.addEventListener('change', () => {
-            numeroPlanta = 1;
-            numeroPlantaInput.value = numeroPlanta;
-        });
-
-        adicionarPragaBtn.addEventListener('click', () => {
-            const talhao = talhaoSelect.value;
-            const pragueiro = document.getElementById('nomePragueiro').value;
-            const nomePraga = document.getElementById('nomePraga').value;
-            const quantidade = document.getElementById('quantidade').value;
-            const observacoes = document.getElementById('observacoes').value;
-
-            if (!pragueiro || !quantidade || isNaN(quantidade) || quantidade <= 0) {
-                alert('Por favor, preencha todos os campos corretamente.');
-                return;
-            }
-
-            const registro = {
-                Talhao: talhao,
-                Planta: numeroPlanta,
-                Pragueiro: pragueiro,
-                Praga: nomePraga,
-                Quantidade: quantidade,
-                Observacoes: observacoes
-            };
-
-            dadosPragas.push(registro);
-            salvarDados();
-            atualizarTabela();
-        });
-
-        function atualizarTabela() {
-            tabelaDados.innerHTML = '';
-            dadosPragas.forEach((registro, index) => {
-                const row = document.createElement('tr');
-
-                Object.values(registro).forEach(value => {
-                    const cell = document.createElement('td');
-                    cell.textContent = value;
-                    row.appendChild(cell);
-                });
-
-                const actionsCell = document.createElement('td');
-                const deleteBtn = document.createElement('button');
-                deleteBtn.textContent = 'Excluir';
-                deleteBtn.addEventListener('click', () => {
-                    dadosPragas.splice(index, 1);
-                    salvarDados();
-                    atualizarTabela();
-                });
-                actionsCell.appendChild(deleteBtn);
-                row.appendChild(actionsCell);
-
-                tabelaDados.appendChild(row);
+            plantaAnteriorBtn.addEventListener('click', () => {
+                if (numeroPlanta > 1) {
+                    numeroPlanta--;
+                    numeroPlantaInput.value = numeroPlanta;
+                }
             });
-        }
 
-        function salvarDados() {
-            localStorage.setItem('dadosPragas', JSON.stringify(dadosPragas));
-        }
+            plantaSeguinteBtn.addEventListener('click', () => {
+                numeroPlanta++;
+                numeroPlantaInput.value = numeroPlanta;
+            });
 
-        function carregarDados() {
-            const dadosSalvos = localStorage.getItem('dadosPragas');
-            if (dadosSalvos) {
-                dadosPragas = JSON.parse(dadosSalvos);
+            adicionarPragaBtn.addEventListener('click', () => {
+                const talhao = document.getElementById('talhao').value;
+                const pragueiro = document.getElementById('nomePragueiro').value;
+                const estagio = document.getElementById('estagio').value;
+                const tecnica = document.getElementById('tecnica').value;
+                const nomePraga = document.getElementById('nomePraga').value;
+                const quantidade = document.getElementById('quantidade').value;
+                const observacoes = document.getElementById('observacoes').value;
+
+                if (!pragueiro || !quantidade || !tecnica || !estagio || isNaN(quantidade) || quantidade <= 0) {
+                    alert('Por favor, preencha todos os campos corretamente.');
+                    return;
+                }
+
+                const registro = {
+                    Talhao: talhao,
+                    Planta: numeroPlanta,
+                    Pragueiro: pragueiro,
+                    Estagio: estagio,
+                    Tecnica: tecnica,
+                    Praga: nomePraga,
+                    Quantidade: quantidade,
+                    Observacoes: observacoes
+                };
+
+                dadosPragas.push(registro);
+                salvarDados();
                 atualizarTabela();
+            });
+
+            function atualizarTabela() {
+                tabelaDados.innerHTML = '';
+                dadosPragas.forEach((registro, index) => {
+                    const row = document.createElement('tr');
+
+                    Object.values(registro).forEach(value => {
+                        const cell = document.createElement('td');
+                        cell.textContent = value;
+                        row.appendChild(cell);
+                    });
+
+                    const actionsCell = document.createElement('td');
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.textContent = 'Excluir';
+                    deleteBtn.addEventListener('click', () => {
+                        dadosPragas.splice(index, 1);
+                        salvarDados();
+                        atualizarTabela();
+                    });
+                    actionsCell.appendChild(deleteBtn);
+                    row.appendChild(actionsCell);
+
+                    tabelaDados.appendChild(row);
+                });
             }
-        }
 
-        baixarExcelBtn.addEventListener('click', () => {
-            if (dadosPragas.length === 0) {
-                alert('Não há dados para exportar.');
-                return;
+            function salvarDados() {
+                localStorage.setItem('dadosPragas', JSON.stringify(dadosPragas));
             }
 
-            const worksheet = XLSX.utils.json_to_sheet(dadosPragas);
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, 'Pragas');
+            function carregarDados() {
+                const dadosSalvos = localStorage.getItem('dadosPragas');
+                if (dadosSalvos) {
+                    dadosPragas = JSON.parse(dadosSalvos);
+                    atualizarTabela();
+                }
+            }
 
-            XLSX.writeFile(workbook, 'dados_pragas.xlsx');
+            baixarExcelBtn.addEventListener('click', () => {
+                if (dadosPragas.length === 0) {
+                    alert('Não há dados para exportar.');
+                    return;
+                }
+
+                const worksheet = XLSX.utils.json_to_sheet(dadosPragas);
+                const workbook = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(workbook, worksheet, 'Pragas');
+
+                XLSX.writeFile(workbook, 'dados_pragas.xlsx');
+            });
+
+            carregarDados();
         });
-
-        carregarDados();
-    });
 </script>
 </body>
 </html>
