@@ -227,26 +227,27 @@
             <h2>Dados Registrados</h2>
             <table>
                 <thead>
-                    <tr>
-                        <th>Talhão</th>
-                        <th>Cultura<th>
-                        <th>Planta</th>
-                        <th>Pragueiro</th>
-                        <th>Estágio</th>
-                        <th>Técnica</th>
-                        <th>Praga</th>
-                        <th>Quantidade</th>
-                        <th>Observações</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
+    <tr>
+        <th>Talhão</th>
+        <th>Cultura</th>
+        <th>Planta</th>
+        <th>Pragueiro</th>
+        <th>Estágio</th>
+        <th>Técnica</th>
+        <th>Praga</th>
+        <th>Quantidade</th>
+        <th>Observações</th>
+        <th>Ações</th>
+    </tr>
+</thead>
+
                 <tbody id="tabelaDados"></tbody>
             </table>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
-    <script>
+   <script>
         document.addEventListener('DOMContentLoaded', () => {
             const numeroPlantaInput = document.getElementById('numeroPlanta');
             const plantaAnteriorBtn = document.getElementById('plantaAnterior');
@@ -280,13 +281,13 @@
                 const quantidade = document.getElementById('quantidade').value;
                 const observacoes = document.getElementById('observacoes').value;
 
-                if (!pragueiro || !cultura|| !quantidade || !tecnica || !estagio || isNaN(quantidade) || quantidade <= 0) {
+                if (!pragueiro || !cultura || !quantidade || !tecnica || !estagio || isNaN(quantidade) || quantidade <= 0) {
                     alert('Por favor, preencha todos os campos corretamente.');
                     return;
                 }
 
                 const registro = {
-                   Pragueiro: pragueiro,
+                    Pragueiro: pragueiro,
                     Talhao: talhao,
                     Cultura: cultura,
                     Planta: numeroPlanta,
@@ -355,6 +356,6 @@
 
             carregarDados();
         });
-</script>
+   </script>
 </body>
 </html>
