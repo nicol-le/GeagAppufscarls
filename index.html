@@ -248,43 +248,49 @@
 
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const numeroPlantaInput = document.getElementById('numeroPlanta');
-            const plantaAnteriorBtn = document.getElementById('plantaAnterior');
-            const plantaSeguinteBtn = document.getElementById('plantaSeguinte');
-            const adicionarPragaBtn = document.getElementById('adicionarPraga');
-            const tabelaDados = document.getElementById('tabelaDados');
-            const baixarExcelBtn = document.getElementById('baixarExcel');
+    document.addEventListener('DOMContentLoaded', () => {
+    const numeroPlantaInput = document.getElementById('numeroPlanta');
+    const plantaAnteriorBtn = document.getElementById('plantaAnterior');
+    const plantaSeguinteBtn = document.getElementById('plantaSeguinte');
+    const adicionarPragaBtn = document.getElementById('adicionarPraga');
+    const tabelaDados = document.getElementById('tabelaDados');
+    const baixarExcelBtn = document.getElementById('baixarExcel');
 
-            let numeroPlanta = 1;
-            let dadosPragas = [];
+    let numeroPlanta = 1;
+    let dadosPragas = [];
 
-            plantaAnteriorBtn.addEventListener('click', () => {
-                if (numeroPlanta > 1) {
-                    numeroPlanta--;
-                    numeroPlantaInput.value = numeroPlanta;
-                }
-            });
+    plantaAnteriorBtn.addEventListener('click', () => {
+        if (numeroPlanta > 1) {
+            numeroPlanta--;
+            numeroPlantaInput.value = numeroPlanta;
+        }
+    });
 
-            plantaSeguinteBtn.addEventListener('click', () => {
-                numeroPlanta++;
-                numeroPlantaInput.value = numeroPlanta;
-            });
+    plantaSeguinteBtn.addEventListener('click', () => {
+        numeroPlanta++;
+        numeroPlantaInput.value = numeroPlanta;
+    });
 
-            adicionarPragaBtn.addEventListener('click', () => {
-                const talhao = document.getElementById('talhao').value;
-                const cultura = document.getElementById('cultura').value;
-                const pragueiro = document.getElementById('nomePragueiro').value;
-                const estagio = document.getElementById('estagio').value;
-                const tecnica = document.getElementById('tecnica').value;
-                const nomePraga = document.getElementById('nomePraga').value;
-                const quantidade = document.getElementById('quantidade').value;
-                const observacoes = document.getElementById('observacoes').value;
+    adicionarPragaBtn.addEventListener('click', () => {
+        const talhao = document.getElementById('talhao').value;
+        const cultura = document.getElementById('cultura').value;
+        const pragueiro = document.getElementById('nomePragueiro').value;
+        const estagio = document.getElementById('estagio').value;
+        const tecnica = document.getElementById('tecnica').value;
+        const nomePraga = document.getElementById('nomePraga').value;
+        const quantidade = document.getElementById('quantidade').value;
+        const observacoes = document.getElementById('observacoes').value;
 
-                if (!pragueiro || !cultura || !quantidade || !tecnica || !estagio || isNaN(quantidade) || quantidade <= 0) {
-                    alert('Por favor, preencha todos os campos corretamente.');
-                    return;
-                }
+        if (!pragueiro || !cultura || !quantidade || !tecnica || !estagio || isNaN(quantidade) || quantidade <= 0) {
+            alert('Por favor, preencha todos os campos corretamente.');
+            return;
+        }
+
+        // Capturar coordenadas do usuário
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(position => {
+                const latitude = position.coords.latitude.toFixed(6);
+                const longitude = position.coords.longitude.toFixed(6);
 
                 const registro = {
                     Pragueiro: pragueiro,
@@ -295,67 +301,76 @@
                     Tecnica: tecnica,
                     Praga: nomePraga,
                     Quantidade: quantidade,
-                    Observacoes: observacoes
+                    Observacoes: observacoes,
+                    Latitude: latitude,
+                    Longitude: longitude
                 };
 
                 dadosPragas.push(registro);
                 salvarDados();
                 atualizarTabela();
+            }, error => {
+                alert("Erro ao obter localização: " + error.message);
+            });
+        } else {
+            alert("Geolocalização não suportada no navegador.");
+        }
+    });
+
+    function atualizarTabela() {
+        tabelaDados.innerHTML = '';
+        dadosPragas.forEach((registro, index) => {
+            const row = document.createElement('tr');
+
+            Object.values(registro).forEach(value => {
+                const cell = document.createElement('td');
+                cell.textContent = value;
+                row.appendChild(cell);
             });
 
-            function atualizarTabela() {
-                tabelaDados.innerHTML = '';
-                dadosPragas.forEach((registro, index) => {
-                    const row = document.createElement('tr');
-
-                    Object.values(registro).forEach(value => {
-                        const cell = document.createElement('td');
-                        cell.textContent = value;
-                        row.appendChild(cell);
-                    });
-
-                    const actionsCell = document.createElement('td');
-                    const deleteBtn = document.createElement('button');
-                    deleteBtn.textContent = 'Excluir';
-                    deleteBtn.addEventListener('click', () => {
-                        dadosPragas.splice(index, 1);
-                        salvarDados();
-                        atualizarTabela();
-                    });
-                    actionsCell.appendChild(deleteBtn);
-                    row.appendChild(actionsCell);
-
-                    tabelaDados.appendChild(row);
-                });
-            }
-
-            function salvarDados() {
-                localStorage.setItem('dadosPragas', JSON.stringify(dadosPragas));
-            }
-
-            function carregarDados() {
-                const dadosSalvos = localStorage.getItem('dadosPragas');
-                if (dadosSalvos) {
-                    dadosPragas = JSON.parse(dadosSalvos);
-                    atualizarTabela();
-                }
-            }
-
-            baixarExcelBtn.addEventListener('click', () => {
-                if (dadosPragas.length === 0) {
-                    alert('Não há dados para exportar.');
-                    return;
-                }
-
-                const worksheet = XLSX.utils.json_to_sheet(dadosPragas);
-                const workbook = XLSX.utils.book_new();
-                XLSX.utils.book_append_sheet(workbook, worksheet, 'Pragas');
-
-                XLSX.writeFile(workbook, 'dados_pragas.xlsx');
+            const actionsCell = document.createElement('td');
+            const deleteBtn = document.createElement('button');
+            deleteBtn.textContent = 'Excluir';
+            deleteBtn.addEventListener('click', () => {
+                dadosPragas.splice(index, 1);
+                salvarDados();
+                atualizarTabela();
             });
+            actionsCell.appendChild(deleteBtn);
+            row.appendChild(actionsCell);
 
-            carregarDados();
+            tabelaDados.appendChild(row);
         });
+    }
+
+    function salvarDados() {
+        localStorage.setItem('dadosPragas', JSON.stringify(dadosPragas));
+    }
+
+    function carregarDados() {
+        const dadosSalvos = localStorage.getItem('dadosPragas');
+        if (dadosSalvos) {
+            dadosPragas = JSON.parse(dadosSalvos);
+            atualizarTabela();
+        }
+    }
+
+    baixarExcelBtn.addEventListener('click', () => {
+        if (dadosPragas.length === 0) {
+            alert('Não há dados para exportar.');
+            return;
+        }
+
+        const worksheet = XLSX.utils.json_to_sheet(dadosPragas);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Pragas');
+
+        XLSX.writeFile(workbook, 'dados_pragas.xlsx');
+    });
+
+    carregarDados();
+});
+
    </script>
 </body>
 </html>
