@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Pragas</title>
-    <link rel="manifest" href="manifest.json">
+    <title>Algodão-Geag</title>
+    <link rel="shortcut icon" type="imagex/png" href="Design sem nome (16).png">
     <style>
         * {
             margin: 0;
@@ -77,11 +77,6 @@
             background: #0055cc;
         }
 
-        .button-group {
-            display: flex;
-            justify-content: space-between;
-        }
-
         .visualizacao-dados {
             margin-top: 20px;
             width: 100%;
@@ -104,277 +99,420 @@
             background-color: #003399;
             color: white;
         }
+
+        #formPartesReprodutivas, #formOrganismos {
+            display: none;
+        }
     </style>
 </head>
 <body>
     <header>
-        <h1>Registro de Pragas</h1>
+        <h1>Algodão-Geag</h1>
     </header>
-
     <div class="main-content">
         <div class="app-container">
-            <form id="pragaForm">
+            <h2>Selecione o tipo de avaliação:</h2>
+            <div class="form-group">
+                <button id="btnPartesReprodutivas">Partes Reprodutivas</button>
+                <button id="btnOrganismos">Entomofauna</button>
+            </div>
+        </div>
+
+        <!-- Formulário para Partes Reprodutivas -->
+        <div id="formPartesReprodutivas" class="app-container" style="display: none;">
+            <h3>Partes Reprodutivas</h3>
+            <form id="formReprodutivas">
                 <div class="form-group">
-                    <label for="nomePragueiro">Nome do Pragueiro:</label>
-                    <input type="text" id="nomePragueiro" placeholder="Digite seu nome">
-                </div>
-                <div class="form-group">
-                    <label for="talhao">Talhão:</label>
-                    <select id="talhao">
-                        <option value="P3">P3</option>
-                        <option value="S2">S2</option>
-                        <option value="S4-1">S4-1</option>
-                        <option value="S4-2">S4-2</option>
-                        <option value="P1-B">P1-B</option>
-                        <option value="P1-A">P1-A</option>
-                        <option value="S5">S5</option>
-                    </select>
-                </div>
-                 <div class="form-group">
-                    <label for="cultura">Cultura:</label>
-                    <select id="cultura">
-                        <option value="soja">Soja</option>
-                        <option value="milho">Milho</option>
+                    <label for="partes">Avaliação:</label>
+                    <select id="partes">
+                        <option value="solo">Solo</option>
+                        <option value="aerea">Aérea</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="estagio">Estágio da cultura</label>
-                    <input type="text" id="estagio" placeholder="Digite o estágio">
+                    <label for="pragueiro">Pragueiro:</label>
+                    <input type="text" id="pragueiro" placeholder="Digite o nome do pragueiro" required>
                 </div>
                 <div class="form-group">
-                    <label for="tecnica">Técnica utilizada:</label>
-                    <select id="tecnica">
-                        <option value="bandeja">Bandeja</option>
-                        <option value="panobatido">Pano de Batida</option>
-                        <option value="contagem">Contagem direta</option>
+                    <label for="data">Data:</label>
+                    <input type="date" id="data" required>
+                </div>
+                <div class="form-group">
+                    <label for="estagio">Estágio:</label>
+                    <input type="text" id="estagio" placeholder="Digite o estágio" required>
+                </div>
+                <div class="form-group">
+                    <label for="planta">Número de Planta:</label>
+                    <input type="number" id="planta" placeholder="Digite o número da planta" required>
+                </div>
+                <div class="form-group">
+                    <label for="botoes">Número de Botões:</label>
+                    <input type="number" id="botoes" placeholder="Digite o número de botões" required>
+                </div>
+                <div class="form-group">
+                    <label for="maca">Número de Maçãs:</label>
+                    <input type="number" id="maca" placeholder="Digite o número de maçãs" required>
+                </div>
+                <div class="form-group">
+                    <label for="capulhos">Número de Capulhos:</label>
+                    <input type="number" id="capulhos" placeholder="Digite o número de capulhos" required>
+                </div>
+                <div class="form-group">
+                    <label for="danosamostra">Danos:</label>
+                    <select id="danosamostra">
+                        <option value="NDA">NDA-Nenhum Dano</option>
+                        <optgroup label="Botões">
+                            <option value="BDBO">BDBO-Botão Bicudo Oviposição</option>
+                            <option value="BDBA">BDBA-Botão Bicudo Alimentação</option>
+                            <option value="BAN">BAN-Botão Abscisão Natural</option>
+                            <option value="BOPD">BOPD-Botão Ovipositado Predado</option>
+                            <option value="BDL">BDL-Botão Danificado Lagarta</option>
+                            <option value="BD">BD-Botão Danificado</option>
+                            <option value="FDVA">FDVA-Flor Danificada por Vaquinha</option>
+                        </optgroup>
+                        <optgroup label="Maçã">
+                            <option value="MDBO">MDBO-Maçã Bicudo Oviposição</option>
+                            <option value="MDBA">MDBA-Maçã Bicudo Alimentação</option>
+                            <option value="MAN">MAN-Maçã Abscisão Natural</option>
+                            <option value="MOPD">MOPD-Maçã Ovipositado Predado</option>
+                            <option value="MDL">MDL-Maçã Danificado Lagarta</option>
+                            <option value="MD">MD-Maçã Danificado</option>
+                            <option value="MBP">MBP-Maçã Bico de Papagaio</option>
+                        </optgroup>
+                        <optgroup label="Capulho">
+                            <option value="CDBO">CDBO-Capulho Oviposição Bicudo</option>
+                            <option value="CDBA">CDBA-Capulho Alimentação Bicudo</option>
+                            <option value="CAN">CAN-Capulho Abscisão Natural</option>
+                            <option value="CDF">CDF-Capulho Disturbio Funcional</option>
+                            <option value="COPD">COPD-Capulho Ovipositado Predado</option>
+                            <option value="CDL">CDL-Capulho Danificado Lagarta</option>
+                            <option value="CD">CD-Capulho Danificado</option>
+                        </optgroup>
+                        <optgroup label="Outro">
+                            <option value="outro">Outro</option>
+                            <option value="carima">Carimã</option>
+                            <option value="causa">Causa Desconhecida</option>
+                        </optgroup>
                     </select>
+                </div>
+                <div class="form-group">
+                    <label for="quantidadeDano">Quantidade de Danos:</label>
+                    <input type="number" id="quantidadeDano" placeholder="Digite a quantidade de danos" required>
+                </div>
+                <button type="button" id="salvarReprodutivas">Salvar Dados</button>
+                <button type="button" id="baixarReprodutivas">Baixar Dados (Excel)</button>
+            </form>
+            <div class="visualizacao-dados">
+                <h4>Dados Salvos</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Avaliação</th>
+                            <th>Pragueiro</th>
+                            <th>Data</th>
+                            <th>Estágio</th>
+                            <th>Número da Planta</th>
+                            <th>Número de Botões</th>
+                            <th>Número de Maçãs</th>
+                            <th>Número de Capulhos</th>
+                            <th>Danos</th>
+                            <th>Quantidade de Danos</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabelaReprodutivas"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Formulário para Organismos -->
+        <div id="formOrganismos" class="app-container" style="display: none;">
+            <h3>Entomofauna</h3>
+            <form id="formOrganismosForm">
+                <div class="form-group">
+                    <label for="pragueiroOrganismos">Pragueiro:</label>
+                    <input type="text" id="pragueiroOrganismos" placeholder="Digite o nome do pragueiro" required>
+                </div>
+                <div class="form-group">
+                    <label for="dataOrganismos">Data:</label>
+                    <input type="date" id="dataOrganismos" required>
                 </div>
                 <div class="form-group">
                     <label for="numeroPlanta">Número da Planta:</label>
-                    <div class="button-group">
-                        <button type="button" id="plantaAnterior">Anterior</button>
-                        <input type="number" id="numeroPlanta" value="1" readonly>
-                        <button type="button" id="plantaSeguinte">Seguinte</button>
-                    </div>
+                    <input type="number" id="numeroPlanta" placeholder="Digite o número da planta" required>
                 </div>
                 <div class="form-group">
-                    <label for="nomePraga">Praga:</label>
-                    <select id="nomePraga">
-                    <option value="NHP">NHP-Nenhuma praga registrada</option>
-                        <optgroup label="Cigarrinhas">
-                            <option value="CIG">CIG-Cigarrinha</option>
-                            <option value="NFCIG">NFCIG-Ninfa cigarrinha</option>
-                        </optgroup>
-                
-                        <!-- Grupo: Sugadores -->
-                        <optgroup label="Sugadores">
-                            <option value="TRI">TRIP-Tripes fitófago</option>
-                            <option value="PER">PER-Percevejo desconhcido</option>
-                            <option value="PERM">PERM-Euschistus heros</option>
-                            <option value="PERV">PERV-Nezara viridula</option>
+                    <label for="estagioorganismo">Estágio da Planta:</label>
+                    <input type="text" id="estagioorganismo" placeholder="Digite o estágio da planta" required>
+                </div>
+                <div class="form-group">
+                    <label for="tipoOrganismo">Tipo de Organismo:</label>
+                    <select id="tipoOrganismo">
+                        <option value="NOE">NOE-Nenhum Organismo Encontrado</option>
+                        <option value="OUTRO">Outro</option>
+                        <optgroup label="Sugadores/Desfolhadores">
+                            <option value="TRI">TRI-Tripes fitófago</option>
+                            <option value="TRIP">TRIP-Tripes predador</option>
+                            <option value="PER">PER-Percevejo desconhecido</option>
                             <option value="PERAP">PERAP-Edessa meditabunda</option>
                             <option value="PG">PG-Pulgão</option>
-                            <option value="PGA">PGA-Pulgão alado</option>
-                            <option value="CIG">CIG-cigarrinha-do-milho</option>
-                            <option value="MA">MA-Mosca-branca</option>
                             <option value="NFMB">NFMB-Ninfa mosca-branca</option>
                             <option value="MBA">AMB-Adulto mosca-branca</option>
-                        </optgroup>
-              
-                        <optgroup label="Predadores e Parasitóides">
-                            <option value="BLL">Larva Bicho-lixeiro</option>
-                            <option value="BLA">Adulto Bicho-lixeiro</option>
-                            <option value="OBL">Ovo bicho-lixeiro</option> 
-                            <option value="JOA">JOA-Joaninha</option>
-                            <option value="CYC">JOC-Joaninha cycloneda</option>
-                           <option value="ERIO">ERIO-Joaninha Eriopis</option>
-                        </optgroup>
-                        
-                        <optgroup label="Desfolhadores">
                             <option value="LG">LGG-Lagarta desconhecida</option>
                             <option value="ANTC">ANTC-Anticarsia gemmatalis</option>
                             <option value="HEL">HEL-lagarta helicoverpa</option>
-                           <option value="FAL">FAL-Falsa medideira</option>
-                             <option value="PLU">PLU-Plutella xyllostella</option>
-                             <option value="SPO">SPOD-Spodoptera spp.</option>
+                            <option value="FAL">FAL-Falsa medideira</option>
+                            <option value="PLU">PLU-Plutella xyllostella</option>
+                            <option value="SPO">SPOD-Spodoptera spp.</option>
+                            <option value="ABIC">ABIC-Adulto Bicudo Algodoeiro</option>
+                            <option value="LBIC">LBIC-Larva Bicudo Algodoeiro</option>
                         </optgroup>
-                          <optgroup label="Massa de Ovos">
-                            <option value="Ovosparasitados">Massa de ovos parasitados(percevejo)</option>
-                           <option value="massaovos">Massa de ovos(percevejo)</option>                          
-                           
+                        <optgroup label="Polinizadores">
+                            <option value="ABL">ABL-Abelha</option>
+                            <option value="ASIR">ASIR-Adulto Sirfideo</option>
+                            <option value="LSIR">LSIR-Larva Sirfideo</option>
                         </optgroup>
-                        <optgroup label="Desfolhadores">
-                            <option value="Desfolha F(%)">Desfolha F(%)-Formiga</option>
-                            <option value="Desfolha G(%)">Desfolha G(%)-Gafanhoto</option>
-                            <option value="Desfolha L(%)">Desfolha L(%)-Lagarta</option>
-                            <option value="Desfolha V(%)">Desfolha V(%)-Vaquinha</option>
+                        <optgroup label="Predadores e Parasitóides">
+                            <option value="BLL">Larva Bicho-lixeiro</option>
+                            <option value="BLA">Adulto Bicho-lixeiro</option>
+                            <option value="OBL">Ovo bicho-lixeiro</option>
+                            <option value="TES">TES-Tesourinha</option>
+                            <option value="PGM">PGM-Pulgão Mumificado</option>
+                            <option value="JOA">JOA-Joaninha</option>
+                            <option value="CYC">JOC-Joaninha cycloneda</option>
+                            <option value="JP">JP-Joaninha Hipodamia</option>
+                            <option value="LJ">LJ-Larva Joaninha</option>
+                            <option value="LHIP">LHIP-Larva Joaninha Eriopis</option>
+                            <option value="LCYC">LCYC-Larva Joaninha cycloneda</option>
+                            <option value="LHIP">LHIP-Larva Joaninha Hipodamia</option>
+                            <option value="ERIO">ERIO-Joaninha Eriopis</option>
+                            <option value="PERO">PERO-Percevejo Orius</option>
+                            <option value="PERP">PER-Percevejo predador</option>
+                            <option value="ARN">ANT-Anthycidae</option>
+                            <option value="ADOL">ADOL-Dolichopodidae</option>
+                            <option value="FOR">FOR-Formiga</option>
+                            <option value="ARA">ARA-Aranha Predadora</option>
+                            <option value="REDU">REDU-Reduviidae</option>
+                            <option value="AC">AC-Acaro</option>
                         </optgroup>
-                
-                            <option value="Outro">Outro</option>
-                        
                     </select>
                 </div>
-                
                 <div class="form-group">
                     <label for="quantidade">Quantidade:</label>
-                    <input type="number" id="quantidade" placeholder="Digite a quantidade">
+                    <input type="number" id="quantidade" placeholder="Digite a quantidade" required>
                 </div>
                 <div class="form-group">
                     <label for="observacoes">Observações:</label>
-                    <textarea id="observacoes" placeholder="Detalhes sobre a planta ou praga"></textarea>
+                    <textarea id="observacoes" placeholder="Digite observações"></textarea>
                 </div>
-                <button type="button" id="adicionarPraga">Adicionar Praga</button>
+                <button type="button" id="salvarOrganismos">Salvar Dados</button>
+                <button type="button" id="baixarOrganismos">Baixar Dados (Excel)</button>
             </form>
-            <button id="baixarExcel">Baixar Excel</button>
-        </div>
-        <div class="visualizacao-dados">
-            <h2>Dados Registrados</h2>
-            <table>
-                 <thead>
-                    <tr>
-                        <th>Talhão</th>
-                        <th>Cultura</th>
-                        <th>Planta</th>
-                        <th>Pragueiro</th>
-                        <th>Estágio</th>
-                        <th>Técnica</th>
-                        <th>Praga</th>
-                        <th>Quantidade</th>
-                        <th>Observações</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-
-                <tbody id="tabelaDados"></tbody>
-            </table>
+            <div class="visualizacao-dados">
+                <h4>Dados Salvos</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Pragueiro</th>
+                            <th>Data</th>
+                            <th>Número da Planta</th>
+                            <th>Estágio</th>
+                            <th>Tipo de Organismo</th>
+                            <th>Quantidade</th>
+                            <th>Observações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabelaOrganismos"></tbody>
+                </table>
+            </div>
         </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
-   <script>
+    <script>
     document.addEventListener('DOMContentLoaded', () => {
-    const numeroPlantaInput = document.getElementById('numeroPlanta');
-    const plantaAnteriorBtn = document.getElementById('plantaAnterior');
-    const plantaSeguinteBtn = document.getElementById('plantaSeguinte');
-    const adicionarPragaBtn = document.getElementById('adicionarPraga');
-    const tabelaDados = document.getElementById('tabelaDados');
-    const baixarExcelBtn = document.getElementById('baixarExcel');
+        const btnPartesReprodutivas = document.getElementById('btnPartesReprodutivas');
+        const btnOrganismos = document.getElementById('btnOrganismos');
+        const formPartesReprodutivas = document.getElementById('formPartesReprodutivas');
+        const formOrganismos = document.getElementById('formOrganismos');
+        const tabelaReprodutivas = document.getElementById('tabelaReprodutivas');
+        const tabelaOrganismos = document.getElementById('tabelaOrganismos');
+        const pragueiroInput = document.getElementById('pragueiro');
+        const dataInput = document.getElementById('data');
+        const partesSelect = document.getElementById('partes'); // Seleção de avaliação (Solo ou Aérea)
+        const pragueiroOrganismosInput = document.getElementById('pragueiroOrganismos');
+        const dataOrganismosInput = document.getElementById('dataOrganismos');
 
-    let numeroPlanta = 1;
-    let dadosPragas = [];
+        let dadosReprodutivas = JSON.parse(localStorage.getItem('dadosReprodutivas')) || [];
+        let dadosOrganismos = JSON.parse(localStorage.getItem('dadosOrganismos')) || [];
 
-    plantaAnteriorBtn.addEventListener('click', () => {
-        if (numeroPlanta > 1) {
-            numeroPlanta--;
-            numeroPlantaInput.value = numeroPlanta;
-        }
-    });
-
-    plantaSeguinteBtn.addEventListener('click', () => {
-        numeroPlanta++;
-        numeroPlantaInput.value = numeroPlanta;
-    });
-
-    adicionarPragaBtn.addEventListener('click', () => {
-        const talhao = document.getElementById('talhao').value;
-        const cultura = document.getElementById('cultura').value;
-        const pragueiro = document.getElementById('nomePragueiro').value;
-        const estagio = document.getElementById('estagio').value;
-        const tecnica = document.getElementById('tecnica').value;
-        const nomePraga = document.getElementById('nomePraga').value;
-        const quantidade = document.getElementById('quantidade').value;
-        const observacoes = document.getElementById('observacoes').value;
-
-        if (!pragueiro || !cultura || !quantidade || !tecnica || !estagio || isNaN(quantidade) || quantidade <= 0) {
-            alert('Por favor, preencha todos os campos corretamente.');
-            return;
+        // Função para salvar campos fixos no localStorage
+        function salvarCamposFixos() {
+            localStorage.setItem('pragueiroFixos', pragueiroInput.value);
+            localStorage.setItem('dataFixos', dataInput.value);
+            localStorage.setItem('partesFixos', partesSelect.value); // Salva a seleção de avaliação
+            localStorage.setItem('pragueiroOrganismosFixos', pragueiroOrganismosInput.value);
+            localStorage.setItem('dataOrganismosFixos', dataOrganismosInput.value);
         }
 
-        // Capturar coordenadas do usuário
-        if ("geolocation" in navigator) {
-            navigator.geolocation.getCurrentPosition(position => {
-                const latitude = position.coords.latitude.toFixed(6);
-                const longitude = position.coords.longitude.toFixed(6);
-
-                const registro = {
-                    Pragueiro: pragueiro,
-                    Talhao: talhao,
-                    Cultura: cultura,
-                    Planta: numeroPlanta,
-                    Estagio: estagio,
-                    Tecnica: tecnica,
-                    Praga: nomePraga,
-                    Quantidade: quantidade,
-                    Observacoes: observacoes,
-                    Latitude: latitude,
-                    Longitude: longitude
-                };
-
-                dadosPragas.push(registro);
-                salvarDados();
-                atualizarTabela();
-            }, error => {
-                alert("Erro ao obter localização: " + error.message);
-            });
-        } else {
-            alert("Geolocalização não suportada no navegador.");
+        // Função para carregar campos fixos do localStorage
+        function carregarCamposFixos() {
+            pragueiroInput.value = localStorage.getItem('pragueiroFixos') || '';
+            dataInput.value = localStorage.getItem('dataFixos') || '';
+            partesSelect.value = localStorage.getItem('partesFixos') || 'solo'; // Carrega a seleção de avaliação
+            pragueiroOrganismosInput.value = localStorage.getItem('pragueiroOrganismosFixos') || '';
+            dataOrganismosInput.value = localStorage.getItem('dataOrganismosFixos') || '';
         }
-    });
 
-    function atualizarTabela() {
-        tabelaDados.innerHTML = '';
-        dadosPragas.forEach((registro, index) => {
-            const row = document.createElement('tr');
+        // Função para mostrar o formulário correto
+        function mostrarFormulario(tipo) {
+            formPartesReprodutivas.style.display = tipo === 'reprodutivas' ? 'block' : 'none';
+            formOrganismos.style.display = tipo === 'organismos' ? 'block' : 'none';
+        }
 
-            Object.values(registro).forEach(value => {
-                const cell = document.createElement('td');
-                cell.textContent = value;
-                row.appendChild(cell);
-            });
+        // Função para atualizar a tabela de partes reprodutivas
+        function atualizarTabelaReprodutivas() {
+            tabelaReprodutivas.innerHTML = dadosReprodutivas.map((dado, index) => `
+                <tr>
+                    <td>${dado.avaliacao}</td> <!-- Exibe a avaliação (Solo ou Aérea) -->
+                    <td>${dado.pragueiro}</td>
+                    <td>${dado.data}</td>
+                    <td>${dado.estagio}</td>
+                    <td>${dado.planta}</td>
+                    <td>${dado.botoes}</td>
+                    <td>${dado.macas}</td>
+                    <td>${dado.capulhos}</td>
+                    <td>${dado.danos}</td>
+                    <td>${dado.quantidadeDano}</td>
+                    <td><button onclick="excluirLinhaReprodutivas(${index})">Excluir</button></td>
+                </tr>
+            `).join('');
+        }
 
-            const actionsCell = document.createElement('td');
-            const deleteBtn = document.createElement('button');
-            deleteBtn.textContent = 'Excluir';
-            deleteBtn.addEventListener('click', () => {
-                dadosPragas.splice(index, 1);
-                salvarDados();
-                atualizarTabela();
-            });
-            actionsCell.appendChild(deleteBtn);
-            row.appendChild(actionsCell);
+        // Função para atualizar a tabela de organismos
+        function atualizarTabelaOrganismos() {
+            tabelaOrganismos.innerHTML = dadosOrganismos.map((dado, index) => `
+                <tr>
+                    <td>${dado.pragueiro}</td>
+                    <td>${dado.data}</td>
+                    <td>${dado.numeroPlanta}</td>
+                    <td>${dado.estagioorganismo}</td>
+                    <td>${dado.tipoOrganismo}</td>
+                    <td>${dado.quantidade}</td>
+                    <td>${dado.observacoes}</td>
+                    <td><button onclick="excluirLinhaOrganismos(${index})">Excluir</button></td>
+                </tr>
+            `).join('');
+        }
 
-            tabelaDados.appendChild(row);
+        // Função para excluir uma linha da tabela de partes reprodutivas
+        function excluirLinhaReprodutivas(index) {
+            dadosReprodutivas.splice(index, 1);
+            localStorage.setItem('dadosReprodutivas', JSON.stringify(dadosReprodutivas));
+            atualizarTabelaReprodutivas();
+        }
+
+        // Função para excluir uma linha da tabela de organismos
+        function excluirLinhaOrganismos(index) {
+            dadosOrganismos.splice(index, 1);
+            localStorage.setItem('dadosOrganismos', JSON.stringify(dadosOrganismos));
+            atualizarTabelaOrganismos();
+        }
+
+        // Função para baixar dados em formato CSV
+        function baixarDados(dados, nomeArquivo) {
+            const csvContent = [
+                Object.keys(dados[0]).join(','), // Cabeçalhos
+                ...dados.map(obj => Object.values(obj).join(',')) // Linhas
+            ].join('\n');
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.setAttribute('href', url);
+            link.setAttribute('download', `${nomeArquivo}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Event listeners para os botões de seleção de formulário
+        btnPartesReprodutivas.addEventListener('click', () => mostrarFormulario('reprodutivas'));
+        btnOrganismos.addEventListener('click', () => mostrarFormulario('organismos'));
+
+        // Event listener para salvar dados de partes reprodutivas
+        document.getElementById('salvarReprodutivas').addEventListener('click', () => {
+            const avaliacao = partesSelect.value; // Captura a seleção de avaliação (Solo ou Aérea)
+            const pragueiro = pragueiroInput.value;
+            const data = dataInput.value;
+            const estagio = document.getElementById('estagio').value;
+            const planta = document.getElementById('planta').value;
+            const botoes = document.getElementById('botoes').value;
+            const macas = document.getElementById('maca').value;
+            const capulhos = document.getElementById('capulhos').value;
+            const danos = document.getElementById('danosamostra').value;
+            const quantidadeDano = document.getElementById('quantidadeDano').value;
+
+            if (pragueiro && data && planta && botoes && macas && capulhos) {
+                dadosReprodutivas.push({ avaliacao, pragueiro, data, estagio, planta, botoes, macas, capulhos, danos, quantidadeDano });
+                localStorage.setItem('dadosReprodutivas', JSON.stringify(dadosReprodutivas));
+                salvarCamposFixos();
+                atualizarTabelaReprodutivas();
+            }
         });
-    }
 
-    function salvarDados() {
-        localStorage.setItem('dadosPragas', JSON.stringify(dadosPragas));
-    }
+        // Event listener para salvar dados de organismos
+        document.getElementById('salvarOrganismos').addEventListener('click', () => {
+            const pragueiro = pragueiroOrganismosInput.value;
+            const data = dataOrganismosInput.value;
+            const numeroPlanta = document.getElementById('numeroPlanta').value;
+            const estagioorganismo = document.getElementById('estagioorganismo').value;
+            const tipoOrganismo = document.getElementById('tipoOrganismo').value;
+            const quantidade = document.getElementById('quantidade').value;
+            const observacoes = document.getElementById('observacoes').value;
 
-    function carregarDados() {
-        const dadosSalvos = localStorage.getItem('dadosPragas');
-        if (dadosSalvos) {
-            dadosPragas = JSON.parse(dadosSalvos);
-            atualizarTabela();
+            if (pragueiro && data && numeroPlanta && estagioorganismo && tipoOrganismo && quantidade) {
+                dadosOrganismos.push({ pragueiro, data, numeroPlanta, estagioorganismo, tipoOrganismo, quantidade, observacoes });
+                localStorage.setItem('dadosOrganismos', JSON.stringify(dadosOrganismos));
+                atualizarTabelaOrganismos();
+                salvarCamposFixos();
+            }
+        });
+
+        // Event listener para baixar dados de partes reprodutivas
+        document.getElementById('baixarReprodutivas').addEventListener('click', () => {
+            if (dadosReprodutivas.length > 0) {
+                baixarDados(dadosReprodutivas, 'dados_reprodutivas');
+            }
+        });
+
+        // Event listener para baixar dados de organismos
+        document.getElementById('baixarOrganismos').addEventListener('click', () => {
+            if (dadosOrganismos.length > 0) {
+                baixarDados(dadosOrganismos, 'dados_organismos');
+            }
+        });
+
+        // Carregar campos fixos ao iniciar
+        carregarCamposFixos();
+        atualizarTabelaReprodutivas();
+        atualizarTabelaOrganismos();
+
+        // Torna as funções de exclusão acessíveis globalmente
+        window.excluirLinhaReprodutivas = excluirLinhaReprodutivas;
+        window.excluirLinhaOrganismos = excluirLinhaOrganismos;
+
+        // Registrar Service Worker para funcionamento offline
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then((registration) => {
+                        console.log('Service Worker registrado com sucesso:', registration);
+                    })
+                    .catch((error) => {
+                        console.log('Erro ao registrar o Service Worker:', error);
+                    });
+            });
         }
-    }
-
-    baixarExcelBtn.addEventListener('click', () => {
-        if (dadosPragas.length === 0) {
-            alert('Não há dados para exportar.');
-            return;
-        }
-
-        const worksheet = XLSX.utils.json_to_sheet(dadosPragas);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, 'Pragas');
-
-        XLSX.writeFile(workbook, 'dados_pragas.xlsx');
     });
-
-    carregarDados();
-});
-
-   </script>
+</script>
 </body>
 </html>
